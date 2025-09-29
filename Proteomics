@@ -150,7 +150,7 @@ results_chronic <- topTable(fit2, sort.by = "P", n = Inf) %>%
 
 # Filtrati per adj.P.Val < 0.05
 filtered_df <- results_chronic %>%
-  filter(!is.na(adj.P.Val) & adj.P.Val < 0.05)
+  filter(!is.na(adj.P.Val) & adj.P.Val < 0.05)          # adj.P.Val
 
 # Volcano plot
 
