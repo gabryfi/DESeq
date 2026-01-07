@@ -5,16 +5,16 @@
 #!/bin/bash
 
 # ======== PARAMETRI DA MODIFICARE =================
-FASTQ_DIR="/data/pacap_3/no_sample_id/20250519_1114_P2I-00111-A_PAY70806_608693f3/fastq_pass"
-CONTROL_LABEL="veh"
-TREATMENT_LABEL="pacap"
-CONTROL_BARCODES="01 02 03 04 05"
-TREATMENT_BARCODES="06 07 08 09 10"
-BATCH_NAME="Batch1" 
-THREADS=18
-R_DIR="/data/ref/deseq_auto_import.R"   # Path assoluto dove hai salvato lo script R
-REF="/path/to/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa"
-GTF="/data/ref/Homo_sapiens.GRCh38.113.gtf"
+FASTQ_DIR="/data/pacap_3/no_sample_id/20250519_1114_P2I-00111-A_PAY70806_608693f3/fastq_pass"   # input fastq
+CONTROL_LABEL="veh"                                                                             # condizione controllo
+TREATMENT_LABEL="pacap"                                                                         # condizione trattato
+CONTROL_BARCODES="01 02 03 04 05"                                                               # barcode controlli
+TREATMENT_BARCODES="06 07 08 09 10"                                                             # barcode trattati
+BATCH_NAME="Batch1"                                                                             # nome batch
+THREADS=18                                                                                      # quanti threds usare
+R_DIR="/data/ref/deseq_auto_import.R"                                                           # Path assoluto dove hai salvato lo script R
+REF="/path/to/ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa"                                  # path assoluto del FASTA di riferimento
+GTF="/data/ref/Homo_sapiens.GRCh38.113.gtf"                                                     # path asssoluto del GTF
 # ==================================================
 
 
@@ -24,6 +24,14 @@ GTF="/data/ref/Homo_sapiens.GRCh38.113.gtf"
 WORK_DIR="$(dirname "$(dirname "$FASTQ_DIR")")"
 cd "$WORK_DIR" || { echo "Errore: non trovo $WORK_DIR"; exit 1; } # Se stampa "Errore", non trova il path 2 cartelle sopra a FASTQ_DIR
 echo "Salvataggio output in: $WORK_DIR"
+
+# ================================================
+
+
+
+
+
+
 
 #############################
 ########### QC #############
@@ -43,6 +51,7 @@ for barcode in $CONTROL_BARCODES; do
         > ${BATCH_NAME}_barcode_${barcode}_${CONTROL_LABEL}_filtered.fastq
 done
 
+
 # --- Trattati ---
 for barcode in $TREATMENT_BARCODES; do
     echo "Processing $barcode:"
@@ -56,6 +65,8 @@ for barcode in $TREATMENT_BARCODES; do
     fastcat --min_length 500 --min_qscore 10 ${BATCH_NAME}_barcode_${barcode}_${TREATMENT_LABEL}_combined.fastq \
         > ${BATCH_NAME}_barcode_${barcode}_${TREATMENT_LABEL}_filtered.fastq
 done
+
+
 
 #############################
 ###### PYCHOPPER ###########
